@@ -66,6 +66,7 @@ class Predator(Agent):
             if agent is not self and agent.type == PREY and agent.running == True and agent.x == self.x and agent.y == self.y :
                 agent.running = False
                 grid[self.x,self.y ] = PREDATOR_TRAIL
+                agents.remove(agent)
                 return 
         self.x = (self.x + delta_x) % self.dx
         self.y = (self.y + delta_y) % self.dy
@@ -102,6 +103,12 @@ def init_simulation(params):
 
     grid = np.zeros((dx, dy), dtype=np.uint8)
     newgrid = np.empty((dx, dy), dtype=np.uint8)
+
+    for x in range (dx):
+        for y in range(dy):
+            if random.random() < 0.5:
+                grid[x,y] = TREE
+
 
     return grid, newgrid
 
