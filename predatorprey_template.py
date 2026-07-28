@@ -62,6 +62,11 @@ class Predator(Agent):
         self.running = True
     def move(self, grid, agents):
         delta_x, delta_y = random.choice(( (-1, -1), (-1, 0), (-1, 1), ( 0, -1), ( 0, 1), ( 1, -1), ( 1, 0), ( 1, 1) ))
+        for agent in agents:
+            if agent is not self and agent.type == PREY and agent.running == True and agent.x == self.x and agent.y == self.y :
+                agent.running = False
+                grid[self.x,self.y ] = PREDATOR_TRAIL
+                return 
         self.x = (self.x + delta_x) % self.dx
         self.y = (self.y + delta_y) % self.dy
         grid[self.x,self.y] = PREDATOR_TRAIL
@@ -81,6 +86,10 @@ def make_agents(params):
     dx = params["dx"]
     dy = params["dy"]
     return [
+        Prey(x=random.randint(0,dx-1), y=random.randint(0,dy-1), params=params),
+        Predator(x=random.randint(0,dx-1), y=random.randint(0,dy-1), params=params),
+        Prey(x=random.randint(0,dx-1), y=random.randint(0,dy-1), params=params),
+        Predator(x=random.randint(0,dx-1), y=random.randint(0,dy-1), params=params),
         Prey(x=random.randint(0,dx-1), y=random.randint(0,dy-1), params=params),
         Predator(x=random.randint(0,dx-1), y=random.randint(0,dy-1), params=params)
     ]
@@ -113,11 +122,11 @@ if __name__ == "__main__":
         make_agents=make_agents, # user-defined
         colors_ca=colors_ca,
         colors_agents=colors_agents,
-        dx=80, # CA width
-        dy=80, # CA height
+        dx=8, # CA width
+        dy=8, # CA height
         display_dx=800,
         display_dy=800,
         title="Predator-Prey (template)", 
         verbose=False, # display stuff (can be used by user)
-        fps=60 # steps per seconds (default: 60)
+        fps=2 # steps per seconds (default: 60)
     )
