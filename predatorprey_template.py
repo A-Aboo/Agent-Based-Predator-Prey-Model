@@ -62,7 +62,7 @@ class Predator(Agent):
         self.type = PREDATOR
         self.running = True
         self.vie = 1000
-
+        self.params = params
 
 
 
@@ -81,6 +81,7 @@ class Predator(Agent):
 
         if self.vie <= 0:
             self.running = False
+            return
 
         if random.random() < self.params["p_reproduction_p"]:
             agents.append(Predator(x=self.x,y=self.y,params=self.params))
@@ -91,11 +92,18 @@ class Prey(Agent):
         super().__init__(x, y,"Prey",params)
         self.type = PREY
         self.running = True
+        self.vie = 1000
+        self.params = params
     def move(self, grid, agents):
+        self.vie -= 10
         delta_x, delta_y = random.choice(( (-1, -1), (-1, 0), (-1, 1), ( 0, -1), ( 0, 1), ( 1, -1), ( 1, 0), ( 1, 1) ))
         self.x = (self.x + delta_x) % self.dx
         self.y = (self.y + delta_y) % self.dy
-        grid[self.x,self.y] = PREY_TRAIL
+        if self.vie < 0:
+            self.running = False
+            return
+        if random.random() < self.params["p_reproduction_p"]:
+            agents.append(Prey(x=self.x,y=self.y,params=self.params))
 
 def make_agents(params):
     dx = params["dx"]
