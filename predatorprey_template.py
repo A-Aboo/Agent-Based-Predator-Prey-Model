@@ -25,6 +25,7 @@ from calipsolib import Agent
 # =-=-= simulation parameters
 
 params = {
+    "p_reproduction_p":0.01,
 }
 
 # =-=-= Defining cell types
@@ -60,17 +61,30 @@ class Predator(Agent):
         super().__init__(x, y,"Predator",params)
         self.type = PREDATOR
         self.running = True
+        self.vie = 1000
+
+
+
+
+
     def move(self, grid, agents):
         delta_x, delta_y = random.choice(( (-1, -1), (-1, 0), (-1, 1), ( 0, -1), ( 0, 1), ( 1, -1), ( 1, 0), ( 1, 1) ))
+        self.vie -= 10
         for agent in agents:
             if agent is not self and agent.type == PREY and agent.running == True and agent.x == self.x and agent.y == self.y :
                 agent.running = False
-                grid[self.x,self.y ] = PREDATOR_TRAIL
+                self.vie += 100
                 agents.remove(agent)
                 return 
         self.x = (self.x + delta_x) % self.dx
         self.y = (self.y + delta_y) % self.dy
-        grid[self.x,self.y] = PREDATOR_TRAIL
+
+        if self.vie <= 0:
+            self.running = False
+
+        if random.random < self.params["p_reproduction_p"]:
+            Predator(x=self.x , y = self.y , params = params)
+        #grid[self.x,self.y] = PREDATOR_TRAIL
 
 class Prey(Agent):
     def __init__(self, x: float, y: float, params):
