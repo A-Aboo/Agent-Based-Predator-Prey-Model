@@ -92,10 +92,7 @@ class Prey(Agent):
         self.type = PREY
         self.running = True
     def move(self, grid, agents):
-        delta_x, delta_y = random.choice(( (-1, -1), (-1, 0), (-1, 1), ( 0, -1), ( 0, 1), ( 1, -1), ( 1, 0), ( 1, 1) ))
-        self.x = (self.x + delta_x) % self.dx
-        self.y = (self.y + delta_y) % self.dy
-        grid[self.x,self.y] = PREY_TRAIL
+        
 
 def make_agents(params):
     dx = params["dx"]
