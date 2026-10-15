@@ -12,6 +12,7 @@ The simulation follows this loop:
 2. The cellular automata grid is updated.
 3. The future grid becomes the current grid.
 4. The simulation continues.
+..
 
 This structure can be used to model interactions between agents such as predators and prey inside a 2D environment.
 
@@ -51,7 +52,7 @@ pip install pygame numpy
 
 To use the simulator, define:
 
-1. An initialization function:
+1. An initialization function :
 
 ```python
 def init_simulation(params):
@@ -116,7 +117,7 @@ class Prey(Agent):
 
 ## Notes
 
-* The grid should usually be a NumPy array.
+* The grid should be a NumPy array.
 * Grid states must match the keys used in `colors_ca`.
 * Agent types must match the keys used in `colors_agents`.
 * The simulation runs until the window is closed or `ESC` is pressed.
